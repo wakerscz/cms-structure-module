@@ -1,0 +1,105 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+{define type}
+    {var $class = Wakers\StructureModule\Database\RecipeVariable::class}
+    {switch $variable->getType()}
+        {case $class::TYPE_TEXT_PLAIN}
+            Standardní text
+        {case $class::TYPE_TEXT_FORMATTED}
+            Formátovaný text
+        {case $class::TYPE_PHONE}
+            Telefonní čísli
+        {case $class::TYPE_EMAIL}
+            E-mailová adresa
+        {case $class::TYPE_DATE}
+            Datum
+        {case $class::TYPE_DATETIME}
+            Datum a čas
+        {case $class::TYPE_LINK_INTERNAL}
+            Interní odkaz
+        {case $class::TYPE_LINK_EXTERNAL}
+            Externí odkaz
+        {case $class::TYPE_FILES}
+            Soubory
+        {case $class::TYPE_IMAGES}
+            Obrázky
+        {case $class::TYPE_SELECT_BOX}
+            Select box
+    {/switch}
+{/define}
+
+{define required}
+    {var $class = Wakers\StructureModule\Database\RecipeVariable::class}
+
+    {if (int) $variable->getIsRequired() === $class::REQUIRED_YES}
+        <strong>Ano</strong>
+    {else}
+        Ne
+    {/if}
+{/define}
+
+<div class="wakers_modal" id="wakers_structure_variable_summary_modal">
+    {snippet modal}
+        {if $recipe}
+            <div class="modal_title">
+                <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+                {$recipe->getName()} - přehled proměnných
+            </div>
+
+            <div class="modal_subtitle">
+                Přidat proměnnou
+            </div>
+
+            <div class="modal_info">
+                <a href="{plink structureVariableModal:Open! 'recipeId' => $recipe->getId(), 'variableId' => NULL}" class="wakers_btn" data-wakers-progress-button>
+                    Přidat novou proměnnou
+                </a>
+            </div>
+
+            <div class="modal_subtitle">
+                Přehled proměnných
+            </div>
+
+            <div class="wakers_table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Label</th>
+                        <th>Slug</th>
+                        <th>Typ</th>
+                        <th>Povinná</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $variables as $variable}
+                            <tr>
+                                <td>{$iterator->getCounter()}</td>
+                                <td>{$variable->getLabel()}</td>
+                                <td>{$variable->getSlug()}</td>
+                                <td>{include type}</td>
+                                <td>{include required}</td>
+
+                                <td class="text_right actions">
+                                    <a href="{plink structureVariableRemoveModal:Open! $variable->getId()}" class="wakers_btn btn_small inverse" data-wakers-tooltip="Odstranit" data-wakers-progress-button>
+                                        &#x267A;
+                                    </a>
+
+                                    <a href="{plink structureVariableModal:Open! $recipe->getId(), $variable->getId()}" target="_blank" class="wakers_btn btn_small inverse" data-wakers-tooltip="Upravit" data-wakers-progress-button>
+                                        &#x270E;
+                                    </a>
+                                </td>
+                            </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
+    {/snippet}
+</div>

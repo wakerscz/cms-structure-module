@@ -1,0 +1,38 @@
+services:
+
+    # Builder (dostupné přes IValueFormBuilder)
+    - Wakers\StructureModule\Builder\VariableFormBuilder
+
+    # Repositories
+    - Wakers\StructureModule\Repository\RecipeRepository
+    - Wakers\StructureModule\Repository\RecipeSlugRepository
+    - Wakers\StructureModule\Repository\RecipeCategoryAllowedRepository
+    - Wakers\StructureModule\Repository\RecipeVariableRepository
+    - Wakers\StructureModule\Repository\StructureRepository
+    - Wakers\StructureModule\Repository\StructureValueRepository
+    - Wakers\StructureModule\Repository\StructureValueFileRepository
+    - Wakers\StructureModule\Repository\StructureInCategoryRepository
+
+    # Managers
+    - Wakers\StructureModule\Manager\RecipeManager
+    - Wakers\StructureModule\Manager\RecipeSlugManager
+    - Wakers\StructureModule\Manager\RecipeCategoryAllowedManager
+    - Wakers\StructureModule\Manager\RecipeVariableManager
+    - Wakers\StructureModule\Manager\StructureManager
+    - Wakers\StructureModule\Manager\StructureValueManager
+    - Wakers\StructureModule\Manager\StructureInPageManager
+    - Wakers\StructureModule\Manager\StructureValueFileManager
+    - Wakers\StructureModule\Manager\StructureInCategoryManager
+
+    # Components
+    - Wakers\StructureModule\Component\Frontend\RecipeModal\IRecipeModal
+    - Wakers\StructureModule\Component\Frontend\RecipeSummaryModal\IRecipeSummaryModal
+    - Wakers\StructureModule\Component\Frontend\RecipeRemoveModal\IRecipeRemoveModal
+    - Wakers\StructureModule\Component\Frontend\RecipeSlugModal\IRecipeSlugModal
+    - Wakers\StructureModule\Component\Frontend\RecipeSlugRemoveModal\IRecipeSlugRemoveModal
+    - Wakers\StructureModule\Component\Frontend\VariableSummaryModal\IVariableSummaryModal
+    - Wakers\StructureModule\Component\Frontend\VariableModal\IVariableModal
+    - Wakers\StructureModule\Component\Frontend\VariableRemoveModal\IVariableRemoveModal
+    - Wakers\StructureModule\Component\Frontend\StructureModal\IStructureModal
+    - Wakers\StructureModule\Component\Frontend\StructureRemoveModal\IStructureRemoveModal
+    - Wakers\StructureModule\Component\Frontend\Printer\IPrinter

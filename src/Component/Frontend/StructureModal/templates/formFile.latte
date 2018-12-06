@@ -1,0 +1,94 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+{snippet formFile}
+    {if $recipe && count($fileVariables) > 0}
+        <div class="modal_subtitle">
+            Soubory a obrázky
+        </div>
+
+        {if !$structure}
+            <div class="modal_info color_red">
+               Soubory a obrázky lze náhrávat až po uložení <strong>obecného nastavení</strong>.
+            </div>
+        {/if}
+
+        {foreach $fileVariables as $variable}
+
+            {var $slug = $variable->getSlug()}
+
+            {form formFile-$slug 'class' => 'wakers_form'}
+                {var $component = $form->getComponents()[$slug]}
+                {include $component->getOption('path') 'component' => $component, 'variable' => $component->getOption('variable')}
+            {/form}
+
+            {var $files = $variable->getVirtualColumn('Files')}
+
+            {if count($files) > 0}
+                <div class="wakers_form">
+                    <div class="form_group">
+                        <div class="group_label"></div>
+                        <div class="group_control">
+                            <div class="wakers_tree_list break_tree">
+                                <ul>
+                                    {foreach $files as $file}
+                                        <li>
+                                            <div class="inner_container">
+                                                <div class="inner_box">
+                                                    #{$file->getId()} -
+                                                    {if mb_strlen($file->getName()) > 30}
+                                                        {$file->getName()|substr: 0, 20|trim: '-'}....{$file->getName()|substr: -10|trim: '-'}
+                                                    {else}
+                                                        {$file->getName()}
+                                                    {/if}
+                                                </div>
+
+                                                <div class="inner_action">
+                                                    {if $variable->getType() === Wakers\StructureModule\Database\RecipeVariable::TYPE_IMAGES}
+                                                        <!--a href="{*file $file->getProtectedFile()*}" target="_blank"-->
+                                                            <img src="{img $file->getProtectedFile(), '30x30', 'exact'}" alt="{$file->getName()}">
+                                                        <!--/a-->
+                                                    {else}
+                                                        <small>{$file->getProtectedFile()->getPrivateFile()->getExtension()|upper}</small>
+                                                    {/if}
+                                                </div>
+
+                                                <div class="inner_action">
+                                                    <small data-wakers-tooltip="Velikost v MB">{round($file->getSizeMb(), 1)}</small>
+                                                </div>
+
+                                                <div class="inner_action">
+                                                    <a href="{link RemoveFile! $file->getId()}" type="button" class="wakers_btn btn_small inverse" data-wakers-tooltip="Odstranit (okamžitě bez potvrzování)" data-wakers-progress-button>
+                                                        &#x267A;
+                                                    </a>
+                                                </div>
+
+                                                <div class="inner_action">
+                                                    <button type="button" class="wakers_btn btn_small inverse" data-wakers-tooltip="Upravit" data-wakers-toggle="wakers-file-property-{$file->getId()}">
+                                                        &#x270E;
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="inner_container" style="display: none" id="wakers-file-property-{$file->getId()}">
+                                                <div class="inner_box">
+                                                    {include './formFileProperty.latte' file => $file}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/if}
+
+        {/foreach}
+
+    {/if}
+{/snippet}

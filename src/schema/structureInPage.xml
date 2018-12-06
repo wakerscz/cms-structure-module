@@ -1,0 +1,13 @@
+<table name="structure_in_page" phpName="StructureInPage" namespace="StructureModule\Database" package="./structure-module/">
+
+    <column name="structure_id" type="INTEGER" required="TRUE" primaryKey="TRUE"/>
+    <column name="page_id" type="INTEGER" required="TRUE" primaryKey="TRUE"/>
+
+    <foreign-key foreignTable="structure" onDelete="CASCADE">
+        <reference local="structure_id" foreign="id"/>
+    </foreign-key>
+
+    <foreign-key foreignTable="page" onDelete="CASCADE">
+        <reference local="page_id" foreign="id"/>
+    </foreign-key>
+</table>

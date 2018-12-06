@@ -1,0 +1,20 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+<div class="form_group">
+    <div class="group_label">
+        <label n:name="{$component->getName()}">{$component->getLabel()}:</label>
+    </div>
+
+    <div class="group_control">
+        {block input}
+            <input n:name="{$component->getName()}">
+        {/block}
+
+        {include './helper/tooltip.latte' 'variable' => $variable}
+    </div>
+</div>

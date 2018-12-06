@@ -1,0 +1,46 @@
+/**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ */
+
+.mce-tinymce
+{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-width: 0;
+
+    .mce-panel
+    {
+        border-color: darken($color-white, 30%);;
+    }
+
+    .mce-top-part
+    {
+        position: static;
+    }
+}
+
+// Fix pro focus při live-validaci
+.tiny_mce
+{
+    display: block !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    position: absolute !important;
+}
+
+.mce-window.mce-in
+{
+    right: 52.5px;
+    left: auto !important;
+}
+
+
+

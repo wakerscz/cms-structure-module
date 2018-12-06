@@ -1,0 +1,199 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+<div class="wakers_modal" id="wakers_structure_variable_modal">
+    {snippet modal}
+        <div class="modal_title">
+            <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+            Přidat / Upravit proměnnou
+        </div>
+
+        <form n:name="form" class="wakers_form">
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="type">Typ:</label>
+                </div>
+
+                <div class="group_control">
+                    <select n:name="type"></select>
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Dle typu se uživateli zobrazí příslušné políčko ve formuláři.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="label">Label:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="label" placeholder="PDF Reference">
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Název políčka formuláře.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="slug">Slug:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="slug" placeholder="referencePdf">
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Název getteru, který bude dostupný v latte šabloně př: 'myField' bude odpovídat get('myField')">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="tooltip">Nápověda:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="tooltip">
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Nepovinná vysvětlivka - co by měl uživatel do políčka vložit.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="isRequired">Povinné:</label>
+                </div>
+
+                <div class="group_control">
+                    <select n:name="isRequired"></select>
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Bude políčko pro uživatele povinné? (Toto pravidlo neplatí pro soubory a obrázky)">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="regexPattern">Regex:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="regexPattern">
+                    <div class="control_info">
+                <span data-wakers-tooltip="Nepovinný regulární výraz, který se aplikuje při validaci políčka.">
+                    &#10025;
+                </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="regexMessage">Nápověda k regexu:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="regexMessage">
+                    <div class="control_info">
+                <span data-wakers-tooltip="Vysvětlivka k regulárnímu výrazu - co by měl uživatel do políčka vložit.">
+                    &#10025;
+                </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="allowedTypes">Povolené soubory:</label>
+                </div>
+
+                <div class="group_control">
+                    {var $placeholder = '{"json": "application/json", "jpg": "image/jpeg"}'}
+                    {var $example = '{"koncovka": "mime/type"}'}
+                    <textarea n:name="allowedTypes" placeholder="{$placeholder}" rows="5"></textarea>
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Povolené typy souborů - zadávané v JSON formátu př: {$example}. Aplikuje se pouze na obrázky a sooubory.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="maxFiles">Max. souborů:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="maxFiles">
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Maximální počet nahraných souborů v tomto políčku. Aplikuje se pouze na obrázky a sooubory.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="maxFileSize">Max. velikost souboru:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="maxFileSize">
+                    <div class="control_info">
+
+                        {var $defaultMaxSize = $form['maxFileSize']->getOption('maxSize')}
+
+                        <span data-wakers-tooltip="Hodnota určuje maximální velikost jednoho nahrávaného souboru (v MB). Výchozí hodnota je {$defaultMaxSize} MB, pokud nastavíte více, bude pro toto políčko omezen maximální počet souběžně nahrávaných souborů. Pravodlo se Aplikuje pouze na obrázky a sooubory.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="items">Položky seznamu:</label>
+                </div>
+
+                <div class="group_control">
+                    {var $placeholder = '{"right": "Zarovnat vpravo", "left": "Zarovnat vlevo"}'}
+                    <textarea n:name="items" rows="5" placeholder="{$placeholder}"></textarea>
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Položky select boxu zadávané v JSON formátu - v šabloně jsou pak dostupné klíče hodnot. Aplikuje se pouze na select box.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label"></div>
+                <div class="group_control">
+                    <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button>Uložit proměnnou</button>
+                </div>
+            </div>
+        </form>
+    {/snippet}
+</div>

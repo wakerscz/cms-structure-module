@@ -1,0 +1,68 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+{define type}
+    {switch $recipe->getIsDynamic()}
+        {case TRUE}
+            Dynamická
+        {case FALSE}
+            Statická
+    {/switch}
+{/define}
+
+<div class="wakers_modal" id="wakers_structure_recipe_summary_modal">
+    {snippet modal}
+        <div class="modal_title">
+            <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+            Přehled předpisů struktur ({count($recipes)})
+        </div>
+
+        <div class="wakers_table">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Název</th>
+                    <th>Typ</th>
+                    <th>Počet slugů</th>
+                    <th>Počet proměnných</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {foreach $recipes as $recipe}
+                        <tr>
+                            <td>{$iterator->getCounter()}</td>
+                            <td>{$recipe->getName()}</td>
+                            <td>{include type}</td>
+                            <td>{$recipe->getRecipeSlugs()->count()}</td>
+                            <td>{$recipe->getRecipeVariables()->count()}</td>
+
+                            <td class="text_right actions">
+                                <a href="{plink structureRecipeRemoveModal:Open! $recipe->getId()}" class="wakers_btn btn_small inverse" data-wakers-tooltip="Odstranit" data-wakers-progress-button>
+                                    &#x267A;
+                                </a>
+
+                                <a href="{plink structureRecipeModal:Open! $recipe->getId()}" target="_blank" class="wakers_btn btn_small inverse" data-wakers-tooltip="Upravit" data-wakers-progress-button>
+                                    &#x270E;
+                                </a>
+
+                                <a href="{plink structureRecipeSlugModal:Open! $recipe->getId()}" class="wakers_btn btn_small inverse" data-wakers-tooltip="Přehled slugů" data-wakers-progress-button>
+                                    &#8857;
+                                </a>
+
+                                <a href="{plink structureVariableSummaryModal:Open! $recipe->getId()}" class="wakers_btn btn_small inverse" data-wakers-tooltip="Přehled proměnných" data-wakers-progress-button>
+                                    &#9856;
+                                </a>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    {/snippet}
+</div>

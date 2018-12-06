@@ -1,0 +1,25 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+<div class="wakers_modal" id="wakers_structure_structure_modal">
+    {snippetArea modal}
+
+        <div class="modal_title" n:snippet="title">
+            {if $recipe}
+                <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+                {$recipe->getName()} {if $structure}(# {$structure->getId()}){/if}
+            {/if}
+        </div>
+
+        {include './formNoFile.latte'}
+
+        {include './formFile.latte'}
+
+        {include './formMain.latte'}
+
+    {/snippetArea}
+</div>

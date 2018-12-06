@@ -1,0 +1,16 @@
+<table name="structure_value_file" phpName="StructureValueFile" namespace="StructureModule\Database" package="./structure-module/">
+    <column name="id" type="INTEGER" required="TRUE" primaryKey="TRUE" autoIncrement="TRUE"/>
+    <column name="value_id" type="INTEGER" required="TRUE"/>
+    <column name="name" type="VARCHAR" size="255" required="TRUE"/>
+    <column name="title" type="VARCHAR" size="255" defaultValue="NULL"/>
+    <column name="size_mb" type="FLOAT" required="TRUE"/>
+
+    <behavior name="timestampable">
+        <parameter name="create_column" value="uploaded_at" />
+        <parameter name="disable_updated_at" value="TRUE"/>
+    </behavior>
+
+    <foreign-key foreignTable="structure_value" onDelete="CASCADE">
+        <reference local="value_id" foreign="id"/>
+    </foreign-key>
+</table>

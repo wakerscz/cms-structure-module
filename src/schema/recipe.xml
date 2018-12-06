@@ -1,0 +1,9 @@
+<table name="recipe" phpName="Recipe" namespace="StructureModule\Database" package="./structure-module/">
+    <column name="id" type="INTEGER" required="TRUE" primaryKey="TRUE" autoIncrement="TRUE"/>
+    <column name="name" type="VARCHAR" size="32" required="TRUE"/>
+    <column name="is_dynamic" type="BOOLEAN" required="TRUE" defaultValue="TRUE"/>
+    <column name="max_categories" type="INTEGER" required="TRUE" defaultValue="0"/>
+    <column name="max_instances" type="INTEGER" required="TRUE" defaultValue="0"/>
+    <column name="max_depth" type="INTEGER" required="TRUE" defaultValue="0"/>
+    <column name="allowed_parent_id" type="INTEGER" required="FALSE" defaultValue="NULL"/>
+</table>

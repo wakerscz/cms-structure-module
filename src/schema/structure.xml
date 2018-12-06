@@ -1,0 +1,17 @@
+<table name="structure" phpName="Structure" namespace="StructureModule\Database" package="./structure-module/">
+    <column name="id" type="INTEGER" required="TRUE" primaryKey="TRUE" autoIncrement="TRUE"/>
+    <!--column name="recipe_id" type="INTEGER" defaultValue="NULL"/-->
+    <column name="recipe_slug_id" type="INTEGER" required="FALSE"/>
+    <column name="updated_by" type="INTEGER" required="FALSE" phpName="UpdateById"/>
+
+    <behavior name="timestampable" />
+    <behavior name="nested_set" />
+
+    <foreign-key foreignTable="recipe_slug" onDelete="CASCADE">
+        <reference local="recipe_slug_id" foreign="id"/>
+    </foreign-key>
+
+    <foreign-key foreignTable="user" onDelete="SETNULL" phpName="UpdatedBy">
+        <reference local="updated_by" foreign="id"/>
+    </foreign-key>
+</table>

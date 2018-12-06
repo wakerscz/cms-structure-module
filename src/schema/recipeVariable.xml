@@ -1,0 +1,27 @@
+<table name="recipe_variable" phpName="RecipeVariable" namespace="StructureModule\Database" package="./structure-module/">
+
+    <column name="id" type="INTEGER" required="TRUE" primaryKey="TRUE" autoIncrement="TRUE"/>
+    <column name="recipe_id" type="INTEGER" required="TRUE"/>
+    <column name="slug" type="VARCHAR" size="32" required="TRUE"/>
+
+    <column name="type" type="VARCHAR" size="32" required="TRUE"/>
+    <column name="label" type="VARCHAR" size="64" required="TRUE"/>
+    <column name="tooltip" type="VARCHAR" size="256" defaultValue="NULL"/>
+
+    <column name="is_required" type="BOOLEAN" required="TRUE" defaultValue="TRUE"/>
+    <column name="regex_pattern" type="VARCHAR" size="256" defaultValue="NULL"/>
+    <column name="regex_message" type="VARCHAR" size="256" defaultValue="NULL"/>
+    <column name="allowed_types" type="LONGVARCHAR" defaultValue="NULL"/>
+    <column name="max_files" type="INTEGER" required="TRUE" defaultValue="0"/>
+    <column name="max_file_size" type="FLOAT" required="TRUE" defaultValue="0"/>
+    <column name="items" type="LONGVARCHAR" defaultValue="NULL"/>
+
+    <foreign-key foreignTable="recipe" onDelete="CASCADE">
+        <reference local="recipe_id" foreign="id"/>
+    </foreign-key>
+
+    <unique>
+        <unique-column name="recipe_id"/>
+        <unique-column name="slug"/>
+    </unique>
+</table>

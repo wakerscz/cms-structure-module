@@ -1,0 +1,112 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+{snippet formMain}
+    {if $recipe}
+        <div class="modal_subtitle">
+            Další nastavení
+        </div>
+
+        {if !$structure}
+            <div class="modal_info color_red">
+                Další nastavení lze upravovat až po uložení <strong>obecného nastavení</strong>.
+            </div>
+        {/if}
+
+        <form n:name="formMain" class="wakers_form">
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="createdAt">Datum vytvoření:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="createdAt">
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Datum kdy byla položka vytvořena ovlivňuje řazení položek na výpisu kategorií.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="updatedAt">Datum úpravy:</label>
+                </div>
+
+                <div class="group_control">
+                    <input n:name="updatedAt">
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Datum kdy byla položka naposledy upravena - nelze editovat manuálně.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="categories">Kategorie:</label>
+                </div>
+
+                <div class="group_control">
+                    <div class="checkbox_list">
+                        {* TODO: Tree view *}
+                        {foreach $form['categories']->items as $value => $name}
+                            {var $raw_name = explode('|', $name)}
+                            {var $name = $raw_name[1]}
+                            {var $depth = (int) $raw_name[0]}
+
+                            <label n:name="$form['categories']:$value" class="checkbox">
+                                <input n:name="$form['categories']:$value">
+                                <span></span>{$name}
+                            </label>
+                        {/foreach}
+
+                        {if count($form['categories']->items) < 1}
+                            <span class="color_red">Pro tuto strukturu není přiřazena hlavní kategorie!</span>
+                        {/if}
+                    </div>
+
+                    <div class="control_info dashed">
+                        <span data-wakers-tooltip="Kategorie určuje, kde bude položka zobrazena.">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label">
+                    <label n:name="parent">Rodičovská položka:</label>
+                </div>
+
+                <div class="group_control">
+                    <select n:name="parent"></select>
+
+                    <div class="control_info">
+                        <span data-wakers-tooltip="Nadřazená položka je vhodná pro hierarchické zanořování (například pro navigační menu). POZOR: nadřazená položka má vyšší prioritu, než kategorie!">
+                            &#10025;
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_group">
+                <div class="group_label"></div>
+                <div class="group_control">
+                    <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button>
+                        Uložit nastavení
+                    </button>
+                </div>
+            </div>
+        </form>
+    {/if}
+{/snippet}

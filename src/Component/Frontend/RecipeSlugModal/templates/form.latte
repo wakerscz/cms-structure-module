@@ -1,0 +1,37 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+<div class="modal_subtitle">
+    Přidat / Upravit slug
+</div>
+
+{snippet slugForm}
+    <form n:name="slugForm" class="wakers_form">
+        <div class="form_group">
+            <div class="group_label">
+                <label n:name="slug">Slug:</label>
+            </div>
+
+            <div class="group_control">
+                <input n:name="slug" placeholder="aktualita">
+
+                <div class="control_info">
+                    <span data-wakers-tooltip="Pomocí slugu lze vypisovat různá uživatelská data na různých místech v jedné šabloně.">
+                        &#10025;
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form_group">
+            <div class="group_label"></div>
+            <div class="group_control">
+                <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button>Uložit slug</button>
+            </div>
+        </div>
+    </form>
+{/snippet}

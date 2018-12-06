@@ -1,0 +1,13 @@
+<table name="recipe_slug" phpName="RecipeSlug" namespace="StructureModule\Database" package="./structure-module/">
+    <column name="id" type="INTEGER" required="TRUE" autoIncrement="TRUE" primaryKey="TRUE"/>
+    <column name="recipe_id" type="INTEGER" required="TRUE"/>
+    <column name="slug" type="VARCHAR" size="32" required="TRUE"/>
+
+    <foreign-key foreignTable="recipe" onDelete="CASCADE">
+        <reference local="recipe_id" foreign="id"/>
+    </foreign-key>
+
+    <unique>
+        <unique-column name="slug"/>
+    </unique>
+</table>

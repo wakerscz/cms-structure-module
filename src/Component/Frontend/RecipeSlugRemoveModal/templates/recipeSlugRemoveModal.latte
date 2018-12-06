@@ -1,0 +1,27 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+
+<div class="wakers_modal" id="wakers_structure_recipe_slug_remove_modal">
+    {snippet modal}
+        {if $recipeSlug}
+            <div class="modal_title">
+                <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+                Potvrdit odstranění slugu
+            </div>
+
+            <div class="modal_info">
+                Tento úkon je nevratný - slug <strong>{$recipeSlug->getSlug()}</strong> bude úplně odstraněn.<br>
+                Opravdu si přejete tento slug odstranit?
+            </div>
+
+            <a href="{link Remove! $recipeSlug->getId()}" class="wakers_btn" data-wakers-progress-button>Ano, přeji</a>
+
+            <a href="#" class="wakers_btn inverse" data-wakers-modal-close>Ne</a>
+        {/if}
+    {/snippet}
+</div>

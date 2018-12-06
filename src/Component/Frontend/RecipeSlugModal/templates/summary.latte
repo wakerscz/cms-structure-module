@@ -1,0 +1,43 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+{snippet slugSummary}
+    <div class="modal_subtitle">
+        Přehled slugů
+    </div>
+
+    <div class="wakers_table">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Slug</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $slugs as $slug}
+                <tr>
+                    <td>{$iterator->getCounter()}</td>
+                    <td>{$slug->getSlug()}</td>
+
+                    <td class="text_right actions">
+                        <a href="{plink structureRecipeSlugRemoveModal:Open! $slug->getId()}" class="wakers_btn btn_small inverse" data-wakers-tooltip="Odstranit" data-wakers-progress-button>
+                            &#x267A;
+                        </a>
+
+                        <a href="{plink structureRecipeSlugModal:Edit! $slug->getId()}" target="_blank" class="wakers_btn btn_small inverse" data-wakers-tooltip="Upravit" data-wakers-progress-button>
+                            &#x270E;
+                        </a>
+
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+{/snippet}

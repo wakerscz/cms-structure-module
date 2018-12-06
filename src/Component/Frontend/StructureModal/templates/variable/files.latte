@@ -1,0 +1,22 @@
+{**
+ * Copyright (c) 2018 Wakers.cz
+ *
+ * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
+ *
+ *}
+
+<div class="form_group">
+    <div class="group_label">
+        <label n:name="{$component->getName()}">{$component->getLabel()}:</label>
+    </div>
+
+    <div class="group_control">
+        <input n:name="{$component->getName()}" data-lfv-message-id="lfv_{$component->getControl()->attrs['id']}">
+
+        {include './helper/tooltip.latte' 'variable' => $variable}
+
+        <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button="show-percentage">
+            Nahrát
+        </button>
+    </div>
+</div>

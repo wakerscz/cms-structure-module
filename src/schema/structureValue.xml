@@ -1,0 +1,24 @@
+<table name="structure_value" phpName="StructureValue" namespace="StructureModule\Database" package="./structure-module/">
+    <column name="id" type="INTEGER" required="TRUE" primaryKey="TRUE" autoIncrement="TRUE"/>
+    <column name="structure_id" type="INTEGER" required="TRUE"/>
+    <column name="recipe_variable_id" type="INTEGER" required="TRUE"/>
+    <column name="content" type="LONGVARCHAR" required="FALSE" defaultValue="NULL"/>
+    <column name="internal_link_to_url" type="INTEGER" required="FALSE" defaultValue="NULL" phpName="LinkToUrlId"/>
+
+    <foreign-key foreignTable="structure" onDelete="CASCADE">
+        <reference local="structure_id" foreign="id"/>
+    </foreign-key>
+
+    <foreign-key foreignTable="recipe_variable" onDelete="CASCADE">
+        <reference local="recipe_variable_id" foreign="id"/>
+    </foreign-key>
+
+    <foreign-key foreignTable="page_url" onDelete="SETNULL" phpName="LinkToUrl">
+        <reference local="internal_link_to_url" foreign="page_id"/>
+    </foreign-key>
+
+    <unique>
+        <unique-column name="structure_id"/>
+        <unique-column name="recipe_variable_id"/>
+    </unique>
+</table>
