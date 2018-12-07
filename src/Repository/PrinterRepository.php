@@ -23,10 +23,11 @@ class PrinterRepository
     /**
      * @param Lang $lang
      * @param array $categorySlugs
+     * @param bool $filterByPagePublished
      * @return int
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function countByCategorySlugs(Lang $lang, array $categorySlugs) : int
+    public function countByCategorySlugs(Lang $lang, array $categorySlugs, bool $filterByPagePublished) : int
     {
         return StructureQuery::create()
             ->useStructureInCategoryQuery()
@@ -35,26 +36,30 @@ class PrinterRepository
                     ->filterBySlug($categorySlugs, Criteria::IN)
                 ->endUse()
             ->endUse()
+
+            ->_if($filterByPagePublished)
+                ->useStructureInPageQuery()
+                    ->usePageQuery()
+                        ->filterByPublished(TRUE)
+                    ->endUse()
+                ->endUse()
+            ->_endif()
+
             ->count();
     }
 
 
     /**
      * @param Lang $lang
-     * @param array|string[] $categorySlugs
-     * @param int|NULL $paginationOffset
-     * @param int|NULL $paginationLimit
+     * @param array $categorySlugs
+     * @param int|null $paginationOffset
+     * @param int|null $paginationLimit
      * @param string $sort
+     * @param bool $filterByPagePublished
      * @return StructureResult[]
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function findByCategorySlugs(
-        Lang $lang,
-        array $categorySlugs,
-        ?int $paginationOffset,
-        ?int $paginationLimit,
-        string $sort
-    ) : array
+    public function findByCategorySlugs(Lang $lang, array $categorySlugs, ?int $paginationOffset, ?int $paginationLimit, string $sort, bool $filterByPagePublished) : array
     {
         $preQuery = StructureQuery::create()
 
@@ -64,6 +69,14 @@ class PrinterRepository
                     ->filterBySlug($categorySlugs, Criteria::IN)
                 ->endUse()
             ->endUse()
+
+            ->_if($filterByPagePublished)
+                ->useStructureInPageQuery()
+                    ->usePageQuery()
+                        ->filterByPublished(TRUE)
+                    ->endUse()
+                ->endUse()
+            ->_endif()
 
             ->_if($paginationLimit !== NULL && $paginationOffset !== NULL)
                 ->setOffset($paginationOffset)
@@ -89,6 +102,14 @@ class PrinterRepository
                 ->leftJoinWithLinkToUrl()
             ->endUse()
 
+            ->_if($filterByPagePublished)
+                ->useStructureInPageQuery()
+                    ->usePageQuery()
+                        ->filterByPublished(TRUE)
+                    ->endUse()
+                ->endUse()
+            ->_endif()
+
             ->orderByCreatedAt($sort);
 
         $result = [];
@@ -105,10 +126,11 @@ class PrinterRepository
      * @param Lang $lang
      * @param array $categorySlugs
      * @param string $sort
+     * @param bool $filterByPagePublished
      * @return StructureResult[]
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function findRecursiveByCategorySlugs(Lang $lang, array $categorySlugs, string $sort) : array
+    public function findRecursiveByCategorySlugs(Lang $lang, array $categorySlugs, string $sort, bool $filterByPagePublished) : array
     {
         $trees = [
             'item' => NULL,
@@ -137,6 +159,14 @@ class PrinterRepository
                 ->leftJoinWithLinkToUrl()
             ->endUse()
 
+            ->_if($filterByPagePublished)
+                ->useStructureInPageQuery()
+                    ->usePageQuery()
+                        ->filterByPublished(TRUE)
+                    ->endUse()
+                ->endUse()
+            ->_endif()
+
             ->orderByCreatedAt($sort)
             ->filterByTreeLevel(1)
             ->find();
@@ -163,6 +193,14 @@ class PrinterRepository
                     ->leftJoinWithLinkToUrl()
                 ->endUse()
 
+                ->_if($filterByPagePublished)
+                    ->useStructureInPageQuery()
+                        ->usePageQuery()
+                            ->filterByPublished(TRUE)
+                        ->endUse()
+                    ->endUse()
+                ->_endif()
+
                 ->filterByTreeLeft($root->getTreeLeft(), Criteria::GREATER_THAN)
                 ->filterByTreeRight($root->getTreeRight(), Criteria::LESS_THAN)
                 ->orderByTreeLeft()
@@ -187,10 +225,11 @@ class PrinterRepository
      * @param array $recipeSlugs
      * @param string $sort
      * @param Page|NULL $page
-     * @return array|StructureResult[]
+     * @param bool $filterByPagePublished
+     * @return StructureResult[]
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function findByRecipeSlugsAndPage(array $recipeSlugs, string $sort, Page $page = NULL) : array
+    public function findByRecipeSlugsAndPage(array $recipeSlugs, string $sort, ?Page $page, bool $filterByPagePublished) : array
     {
         $result = [];
 
@@ -199,6 +238,13 @@ class PrinterRepository
                 ->_if($page !== NULL)
                     ->useStructureInPageQuery()
                         ->filterByPage($page)
+
+                        ->_if($filterByPagePublished)
+                            ->usePageQuery()
+                                ->filterByPublished(TRUE)
+                            ->endUse()
+                        ->_endif()
+
                     ->endUse()
                 ->_endif()
 
@@ -229,10 +275,11 @@ class PrinterRepository
      * @param array $recipeSlugs
      * @param string $sort
      * @param Page|NULL $page
-     * @return array|StructureResult[]
+     * @param bool $filterByPagePublished
+     * @return StructureResult[]
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function findRecursiveByRecipeSlugsAndPage(array $recipeSlugs, string $sort, Page $page = NULL) : array
+    public function findRecursiveByRecipeSlugsAndPage(array $recipeSlugs, string $sort, ?Page $page, bool $filterByPagePublished) : array
     {
         $trees = [
             'item' => NULL,
@@ -243,6 +290,13 @@ class PrinterRepository
             ->_if($page !== NULL)
                 ->useStructureInPageQuery()
                     ->filterByPage($page)
+
+                    ->_if($filterByPagePublished)
+                        ->usePageQuery()
+                            ->filterByPublished(TRUE)
+                        ->endUse()
+                    ->_endif()
+
                 ->endUse()
             ->_endif()
 
@@ -282,6 +336,14 @@ class PrinterRepository
                     ->leftJoinWithStructureValueFile()
                     ->leftJoinWithLinkToUrl()
                 ->endUse()
+
+                ->_if($filterByPagePublished)
+                    ->useStructureInPageQuery()
+                        ->usePageQuery()
+                            ->filterByPublished(TRUE)
+                        ->endUse()
+                    ->endUse()
+                ->_endif()
 
                 ->filterByTreeLeft($root->getTreeLeft(), Criteria::GREATER_THAN)
                 ->filterByTreeRight($root->getTreeRight(), Criteria::LESS_THAN)

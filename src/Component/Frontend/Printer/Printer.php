@@ -13,6 +13,7 @@ namespace Wakers\StructureModule\Component\Frontend\Printer;
 use Nette\InvalidArgumentException;
 use Nette\Utils\Paginator;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
+use Wakers\BaseModule\Security\BaseAuthorizator;
 use Wakers\LangModule\Repository\LangRepository;
 use Wakers\PageModule\Repository\PageRepository;
 use Wakers\StructureModule\Entity\StructureResult;
@@ -124,16 +125,29 @@ class Printer extends BaseControl
             $params['sort'] = 'ASC';
         }
 
+        // Filtruje dle publikování stránky
+        if (!isset($params['filterByPagePublished']))
+        {
+            $params['filterByPagePublished'] = TRUE;
+        }
+
+        // Admin vidí i nepublikované příspěvky
+        if ($this->presenter->user->isAllowed(BaseAuthorizator::RES_IN_PAGE_MANAGER))
+        {
+            $params['filterByPagePublished'] = FALSE;
+        }
+
         // Pagination
         if (isset($params['paginationLimit']))
         {
-            $count = $this->IPrinterRepository->countByCategorySlugs($params['lang'], $params['categorySlugs']);
+            $count = $this->IPrinterRepository->countByCategorySlugs($params['lang'], $params['categorySlugs'], $params['filterByPagePublished']);
 
             // Paginator
             $this->paginator = new Paginator;
             $this->paginator->setItemCount($count);
             $this->paginator->setItemsPerPage($params['paginationLimit']);
             $this->paginator->setPage($this->pagination);
+
 
             // Limit & Offset
             $params['paginationLimit'] = $this->paginator->getLength();
@@ -145,6 +159,7 @@ class Printer extends BaseControl
             $params['paginationOffset'] = NULL;
         }
 
+        // Filtrování dle konkrétní Page
         if (!isset($params['page']))
         {
             $params['page'] = NULL;
