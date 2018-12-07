@@ -11,6 +11,7 @@ namespace Wakers\StructureModule\Entity;
 
 
 use Nette\Utils\DateTime;
+use Wakers\PageModule\Database\Page;
 use Wakers\PageModule\Database\PageUrl;
 use Wakers\StructureModule\Database\Base\StructureValue;
 use Wakers\StructureModule\Database\Structure;
@@ -32,6 +33,12 @@ class StructureResult
 
 
     /**
+     * @var Page|NULL
+     */
+    protected $page;
+
+
+    /**
      * StructureResult constructor.
      * @param Structure $structure
      * @throws \Propel\Runtime\Exception\PropelException
@@ -45,6 +52,12 @@ class StructureResult
             $slug = $structureValue->getRecipeVariable()->getSlug();
             $this->structureValues[$slug] = $structureValue;
         }
+
+        if ($structure->getRecipeSlug()->getRecipe()->isDynamic())
+        {
+            $pages = $structure->getStructureInPages();
+            $this->page = $pages[0]->getPage();
+        }
     }
 
 
@@ -52,7 +65,7 @@ class StructureResult
      * @param string $slug
      * @return string
      */
-    public function getContent(string $slug) : ?string
+    public function getValContent(string $slug) : ?string
     {
         if (key_exists($slug, $this->structureValues))
         {
@@ -68,7 +81,7 @@ class StructureResult
      * @return PageUrl
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function getPageUrl(string $slug) : ?PageUrl
+    public function getValUrl(string $slug) : ?PageUrl
     {
         if (key_exists($slug, $this->structureValues))
         {
@@ -84,7 +97,7 @@ class StructureResult
      * @return StructureValueFile[]
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function getFiles(string $slug) : array
+    public function getValFiles(string $slug) : array
     {
         if (key_exists($slug, $this->structureValues))
         {
@@ -113,26 +126,6 @@ class StructureResult
 
 
     /**
-     * Shortcut
-     * @return int
-     */
-    public function getId() : int
-    {
-        return $this->structure->getId();
-    }
-
-
-    /**
-     * @return string
-     * @throws \Propel\Runtime\Exception\PropelException
-     */
-    public function getSlug() : string
-    {
-        return $this->structure->getRecipeSlug()->getSlug();
-    }
-
-
-    /**
      * @return Structure
      */
     public function getStructure() : Structure
@@ -151,15 +144,65 @@ class StructureResult
 
 
     /**
-     * @return int
+     * @return Page|NULL
      */
-    public function getLeftValue() : int
+    public function getPage() : ?Page
     {
-        return $this->structure->getLeftValue();
+        return $this->page;
     }
 
 
     /**
+     * @return bool
+     */
+    public function isPagePublished() : bool
+    {
+        if ($this->page)
+        {
+            return $this->page->isPublished();
+        }
+
+        return TRUE;
+    }
+
+
+    /**
+     * @return string|null
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function getPageUrl() : ?string
+    {
+        if ($this->page)
+        {
+            return $this->page->getPageUrl()->getUrl();
+        }
+
+        return NULL;
+    }
+
+
+    /**
+     * Shortcut
+     * @return int
+     */
+    public function getStructureId() : int
+    {
+        return $this->structure->getId();
+    }
+
+
+    /**
+     * @return string
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function getRecipeSlug() : string
+    {
+        return $this->structure->getRecipeSlug()->getSlug();
+    }
+
+
+    /**
+     * Metoda se musí jmenovat přesně takto (kvůli NestedSetu)
      * @return DateTime
      * @throws \Propel\Runtime\Exception\PropelException
      */
@@ -170,6 +213,17 @@ class StructureResult
 
 
     /**
+     * Metoda existuje pouze kvůli řazení NestedSetu
+     * @return int
+     */
+    public function getLeftValue() : int
+    {
+        return $this->structure->getLeftValue();
+    }
+
+
+    /**
+     * Metoda existuje pouze kvůli řazení NestedSetu
      * @return int
      */
     public function getRightValue() : int
