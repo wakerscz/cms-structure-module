@@ -11,7 +11,6 @@ namespace Wakers\StructureModule\Component\Frontend\RecipeRemoveModal;
 
 
 use Wakers\BaseModule\Component\Frontend\BaseControl;
-use Wakers\LangModule\Translator\Translate;
 use Wakers\StructureModule\Database\Recipe;
 use Wakers\StructureModule\Manager\RecipeManager;
 use Wakers\StructureModule\Repository\RecipeRepository;
@@ -39,12 +38,6 @@ class RecipeRemoveModal extends BaseControl
 
 
     /**
-     * @var Translate
-     */
-    protected $translate;
-
-
-    /**
      * @var callable
      */
     public $onRemove = [];
@@ -60,13 +53,11 @@ class RecipeRemoveModal extends BaseControl
      * RecipeRemoveModal constructor.
      * @param RecipeRepository $recipeRepository
      * @param RecipeManager $recipeManager
-     * @param Translate $translate
      */
-    public function __construct(RecipeRepository $recipeRepository, RecipeManager $recipeManager, Translate $translate)
+    public function __construct(RecipeRepository $recipeRepository, RecipeManager $recipeManager)
     {
         $this->recipeRepository = $recipeRepository;
         $this->recipeManager = $recipeManager;
-        $this->translate = $translate;
     }
 
 
@@ -111,8 +102,8 @@ class RecipeRemoveModal extends BaseControl
             $this->recipeManager->delete($this->recipeEntity);
 
             $this->presenter->notificationAjax(
-                $this->translate->translate('Recipe removed'),
-                $this->translate->translate("Recipe '%recipe%' successfully removed.", ['recipe' => $this->recipeEntity->getName()]),
+                'Předpis odstaněn.',
+                "Předpis '{$this->recipeEntity->getName()}' byl úspěšně odstraněn.",
                 'success',
                 FALSE
             );

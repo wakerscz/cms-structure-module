@@ -11,7 +11,6 @@ namespace Wakers\StructureModule\Component\Frontend\VariableRemoveModal;
 
 
 use Wakers\BaseModule\Component\Frontend\BaseControl;
-use Wakers\LangModule\Translator\Translate;
 use Wakers\StructureModule\Database\RecipeVariable;
 use Wakers\StructureModule\Manager\RecipeVariableManager;
 use Wakers\StructureModule\Repository\RecipeVariableRepository;
@@ -39,12 +38,6 @@ class VariableRemoveModal extends BaseControl
 
 
     /**
-     * @var Translate
-     */
-    protected $translate;
-
-
-    /**
      * @var callable
      */
     public $onRemove = [];
@@ -60,13 +53,11 @@ class VariableRemoveModal extends BaseControl
      * RecipeRemoveModal constructor.
      * @param RecipeVariableRepository $variableRepository
      * @param RecipeVariableManager $recipeVariableManager
-     * @param Translate $translate
      */
-    public function __construct(RecipeVariableRepository $variableRepository, RecipeVariableManager $recipeVariableManager, Translate $translate)
+    public function __construct(RecipeVariableRepository $variableRepository, RecipeVariableManager $recipeVariableManager)
     {
         $this->variableRepository = $variableRepository;
         $this->variableManager = $recipeVariableManager;
-        $this->translate = $translate;
     }
 
 
@@ -111,8 +102,8 @@ class VariableRemoveModal extends BaseControl
             $this->variableManager->delete($this->variableEntity);
 
             $this->presenter->notificationAjax(
-                $this->translate->translate('Variable removed'),
-                $this->translate->translate("Variable '%label%' successfully removed.", ['label' => $this->variableEntity->getLabel()]),
+                'Proměnná odstraněna.',
+                "Proměnná '{$this->variableEntity->getLabel()} byla úspěšně odstraněna.'",
                 'success',
                 FALSE
             );

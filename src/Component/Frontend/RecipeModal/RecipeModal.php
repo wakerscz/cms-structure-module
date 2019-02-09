@@ -12,13 +12,11 @@ namespace Wakers\StructureModule\Component\Frontend\RecipeModal;
 
 use Nette\Application\UI\Form;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
-use Wakers\BaseModule\Database\DatabaseException;
 use Wakers\BaseModule\Util\AjaxValidate;
 use Wakers\CategoryModule\Repository\CategoryRepository;
 use Wakers\LangModule\Database\Lang;
 use Wakers\LangModule\Repository\LangRepository;
 use Wakers\StructureModule\Database\Recipe;
-use Wakers\LangModule\Translator\Translate;
 use Wakers\StructureModule\Manager\RecipeCategoryAllowedManager;
 use Wakers\StructureModule\Manager\RecipeManager;
 use Wakers\StructureModule\Manager\StructureInCategoryManager;
@@ -87,12 +85,6 @@ class RecipeModal extends BaseControl
 
 
     /**
-     * @var Translate
-     */
-    protected $translate;
-
-
-    /**
      * @var Lang
      */
     protected $activeLang;
@@ -127,7 +119,6 @@ class RecipeModal extends BaseControl
      * @param RecipeCategoryAllowedManager $recipeCategoryAllowedManager
      * @param StructureInCategoryManager $structureInCategoryManager
      * @param StructureManager $structureManager
-     * @param Translate $translate
      */
     public function __construct(
         RecipeRepository $recipeRepository,
@@ -138,9 +129,7 @@ class RecipeModal extends BaseControl
         RecipeManager $recipeManager,
         RecipeCategoryAllowedManager $recipeCategoryAllowedManager,
         StructureInCategoryManager $structureInCategoryManager,
-        StructureManager $structureManager,
-
-        Translate $translate
+        StructureManager $structureManager
     ) {
         $this->recipeRepository = $recipeRepository;
         $this->categoryRepository = $categoryRepository;
@@ -150,7 +139,6 @@ class RecipeModal extends BaseControl
         $this->recipeCategoryAllowedManager = $recipeCategoryAllowedManager;
         $this->structureInCategoryManager = $structureInCategoryManager;
         $this->structureManager = $structureManager;
-        $this->translate = $translate;
 
         $this->activeLang = $langRepository->getActiveLang();
     }
@@ -192,33 +180,33 @@ class RecipeModal extends BaseControl
         $form = new Form;
 
         $form->addText('name')
-            ->setRequired($this->translate->translate('Name is required.'))
-            ->addRule(Form::MIN_LENGTH, $this->translate->translate('Minimal length of name is %count% characters.', ['count' => 3]), 3)
-            ->addRule(Form::MAX_LENGTH, $this->translate->translate('Maximal length of name is %count% characters.', ['count' => 32]), 32);
+            ->setRequired('Jméno je povinné.')
+            ->addRule(Form::MIN_LENGTH, 'Min. délka jména jsou %d znaky.', 3)
+            ->addRule(Form::MAX_LENGTH, 'Max. délka jména je %d znaků.', 32);
 
         $form->addSelect('isDynamic', NULL, $types)
-            ->setRequired($this->translate->translate('Type is required.'));
+            ->setRequired('Typ struktury je povinný.');
 
         $form->addText('maxInstances')
-            ->setRequired($this->translate->translate('Max instances is required.'))
-            ->addRule(Form::INTEGER, $this->translate->translate('Max instances must be integer.'))
-            ->addRule(Form::MIN, $this->translate->translate('Minimum of Max instances must be %min%.', ['min' => 0]), 0);
+            ->setRequired('Max. počet instancí je povinné.')
+            ->addRule(Form::INTEGER, 'Max. počet instancí musí být celé číslo.')
+            ->addRule(Form::MIN, 'Minimální hodnota max. počtu instancí je: %d', 0);
 
         $form->addCheckboxList('allowedCategories', NULL, $allowedCategories)
-            ->setRequired($this->translate->translate('Category is required.'));
+            ->setRequired('Kategorie je povinná.');
 
         $form->addText('maxCategories')
-            ->setRequired($this->translate->translate('Max categories is required.'))
-            ->addRule(Form::INTEGER, $this->translate->translate('Max categories must be integer.'))
-            ->addRule(Form::MIN, $this->translate->translate('Minimum of Max categories must be %min%.', ['min' => 0]), 0);
+            ->setRequired('Max. počet kategorií je povinný.')
+            ->addRule(Form::INTEGER, 'Max. počet kategorií musí být celé číslo.')
+            ->addRule(Form::MIN, 'Minimální hodnota Max. počtu kategorií je: %d.', 0);
 
         $form->addSelect('allowedParent', NULL, $this->getAllowedParents())
             ->setRequired(FALSE);
 
         $form->addText('maxDepth')
-            ->setRequired($this->translate->translate('Max depth is required.'))
-            ->addRule(Form::INTEGER, $this->translate->translate('Max depth must be integer.'))
-            ->addRule(Form::MIN, $this->translate->translate('Minimum of Max depth must be %min%.', ['min' => 0]), 0);
+            ->setRequired('Max. hloubka zanoření je povinná.')
+            ->addRule(Form::INTEGER, 'Max. hloubka zanoření musí být celé číslo.')
+            ->addRule(Form::MIN, 'Minimální hodnota max. hloubky zanoření je: %d.', 0);
 
         $form->addHidden('id');
 
@@ -318,8 +306,8 @@ class RecipeModal extends BaseControl
 
                 // Flash
                 $this->presenter->notificationAjax(
-                    $this->translate->translate('Recipe saved'),
-                    $this->translate->translate('Recipe was successfully saved.'),
+                    'Předpis uložen',
+                    'Předpis byl úspěšně uložen.',
                     'success',
                     FALSE
                 );

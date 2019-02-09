@@ -11,7 +11,6 @@ namespace Wakers\StructureModule\Component\Frontend\RecipeSlugRemoveModal;
 
 
 use Wakers\BaseModule\Component\Frontend\BaseControl;
-use Wakers\LangModule\Translator\Translate;
 use Wakers\StructureModule\Database\RecipeSlug;
 use Wakers\StructureModule\Manager\RecipeSlugManager;
 use Wakers\StructureModule\Repository\RecipeSlugRepository;

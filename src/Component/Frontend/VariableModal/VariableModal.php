@@ -15,7 +15,6 @@ use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\BaseModule\Database\DatabaseException;
 use Wakers\BaseModule\Util\AjaxValidate;
 use Wakers\BaseModule\Util\Validator;
-use Wakers\LangModule\Translator\Translate;
 use Wakers\StructureModule\Database\Recipe;
 use Wakers\StructureModule\Database\RecipeVariable;
 use Wakers\StructureModule\Manager\RecipeVariableManager;
@@ -54,12 +53,6 @@ class VariableModal extends BaseControl
      * @var RecipeVariableManager
      */
     protected $variableManager;
-
-
-    /**
-     * @var Translate
-     */
-    protected $translate;
 
 
     /**
@@ -107,18 +100,15 @@ class VariableModal extends BaseControl
      * @param RecipeRepository $recipeRepository
      * @param RecipeVariableRepository $recipeVariableRepository
      * @param RecipeVariableManager $variableManager
-     * @param Translate $translate
      */
     public function __construct(
         RecipeRepository $recipeRepository,
         RecipeVariableRepository $recipeVariableRepository,
-        RecipeVariableManager $variableManager,
-        Translate $translate
+        RecipeVariableManager $variableManager
     ) {
         $this->recipeRepository = $recipeRepository;
         $this->variableRepository = $recipeVariableRepository;
         $this->variableManager = $variableManager;
-        $this->translate = $translate;
     }
 
 
