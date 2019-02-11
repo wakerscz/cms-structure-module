@@ -18,6 +18,7 @@ use Nette\Utils\DateTime;
 use Propel\Runtime\Collection\ObjectCollection;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\BaseModule\Util\AjaxValidate;
+use Wakers\BaseModule\Util\SetDisabledForm;
 use Wakers\CategoryModule\Repository\CategoryRepository;
 use Wakers\PageModule\Database\Page;
 use Wakers\PageModule\Repository\PageRepository;
@@ -37,12 +38,14 @@ use Wakers\StructureModule\Repository\StructureRepository;
 use Wakers\StructureModule\Repository\StructureValueFileRepository;
 use Wakers\StructureModule\Repository\StructureValueRepository;
 use Wakers\StructureModule\Repository\RecipeVariableRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 use Wakers\UserModule\Database\User;
 
 
 class StructureModal extends BaseControl
 {
     use AjaxValidate;
+    use SetDisabledForm;
 
 
     /**
@@ -333,6 +336,11 @@ class StructureModal extends BaseControl
         $form->onValidate[] = function (Form $form) { $this->validate($form); };
         $form->onSuccess[] = function (Form $form) { $this->successNoFile($form); };
 
+        if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
+        {
+            $this->setDisabledForm($form, TRUE);
+        }
+
         return $form;
     }
 
@@ -345,7 +353,7 @@ class StructureModal extends BaseControl
      */
     public function successNoFile(Form $form) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $recipeSlug = $this->getRecipeSlug();
             $structure = $this->getStructure();
@@ -430,6 +438,11 @@ class StructureModal extends BaseControl
             $form->onValidate[] = function (Form $form) { $this->validate($form); };
             $form->onSuccess[] = function (Form $form) { $this->successFile($form); };
 
+            if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
+            {
+                $this->setDisabledForm($form, TRUE);
+            }
+
             return $form;
 
         });
@@ -443,7 +456,7 @@ class StructureModal extends BaseControl
      */
     public function successFile(Form $form) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $recipeSlug = $this->getRecipeSlug();
             $structure = $this->getStructure();
@@ -555,6 +568,11 @@ class StructureModal extends BaseControl
             $form->onValidate[] = function (Form $form) { $this->validate($form); };
             $form->onSuccess[] = function (Form $form) { $this->successFileProperty($form); };
 
+            if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
+            {
+                $this->setDisabledForm($form, TRUE);
+            }
+
             return $form;
         });
     }
@@ -567,7 +585,7 @@ class StructureModal extends BaseControl
      */
     public function successFileProperty(Form $form) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $values = $form->getValues();
 
@@ -660,6 +678,11 @@ class StructureModal extends BaseControl
         $form->onValidate[] = function (Form $form) { $this->validate($form); };
         $form->onSuccess[] = function (Form $form) { $this->successMain($form); };
 
+        if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
+        {
+            $this->setDisabledForm($form, TRUE);
+        }
+
         return $form;
     }
 
@@ -671,7 +694,7 @@ class StructureModal extends BaseControl
      */
     public function successMain(Form $form) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $recipeSlug = $this->getRecipeSlug();
             $structure = $this->getStructure();
@@ -726,7 +749,7 @@ class StructureModal extends BaseControl
      */
     public function handleRemoveFile(int $structureValueFileId) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $this->structureValueFileManager->remove($structureValueFileId);
             $this->presenter->notificationAjax('Soubor odstraněn', 'Soubor byl úspěšně odstraněn.', 'info', FALSE);
@@ -740,12 +763,11 @@ class StructureModal extends BaseControl
      * @param string $recipeSlug
      * @param int $structureId
      * @param bool $isNew
-     * @param string|null $allowedParentSlug
      * @throws \Propel\Runtime\Exception\PropelException
      */
     public function handleOpen(string $recipeSlug, int $structureId = NULL, bool $isNew = FALSE) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_MODAL))
         {
             $recipeSlugString = $recipeSlug;
             $this->recipeSlugString = $recipeSlugString;

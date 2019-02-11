@@ -14,6 +14,7 @@ use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\StructureModule\Database\RecipeSlug;
 use Wakers\StructureModule\Manager\RecipeSlugManager;
 use Wakers\StructureModule\Repository\RecipeSlugRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class RecipeSlugRemoveModal extends BaseControl
@@ -95,7 +96,7 @@ class RecipeSlugRemoveModal extends BaseControl
      */
     public function handleRemove(int $id) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_RECIPE_SLUG_REMOVE_MODAL))
         {
             $this->recipeSlugEntity = $this->recipeSlugRepository->findOneById($id);
 

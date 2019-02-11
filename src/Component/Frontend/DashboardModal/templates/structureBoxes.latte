@@ -1,24 +1,28 @@
 {**
  * Copyright (c) 2018 Wakers.cz
- *
  * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
- *
  *}
 
-<div class="wakers_dashboard">
-    <div class="modal_subtitle">Struktury</div>
+{if $user->isAllowed(Wakers\StructureModule\Security\StructureAuthorizator::RES_MODULE)}
+    <div class="wakers_dashboard">
+        <div class="modal_subtitle">Struktury</div>
 
-    <div class="dashboard_boxes">
-        <div class="dashboard_box">
-            <a href="#" data-wakers-modal-open="wakers_structure_recipe_summary_modal">
-                Přehled předpisů
-            </a>
-        </div>
+        <div class="dashboard_boxes">
+            {if $user->isAllowed(Wakers\StructureModule\Security\StructureAuthorizator::RES_RECIPE_SUMMARY_MODAL)}
+                <div class="dashboard_box">
+                    <a href="#" data-wakers-modal-open="wakers_structure_recipe_summary_modal">
+                        Přehled předpisů
+                    </a>
+                </div>
+            {/if}
 
-        <div class="dashboard_box">
-            <a href="{plink structureRecipeModal:Open!}" data-wakers-progress-button>
-                Přidat předpis
-            </a>
+            {if $user->isAllowed(Wakers\StructureModule\Security\StructureAuthorizator::RES_RECIPE_MODAL)}
+                <div class="dashboard_box">
+                    <a href="{plink structureRecipeModal:Open!}" data-wakers-progress-button>
+                        Přidat předpis
+                    </a>
+                </div>
+            {/if}
         </div>
     </div>
-</div>
+{/if}

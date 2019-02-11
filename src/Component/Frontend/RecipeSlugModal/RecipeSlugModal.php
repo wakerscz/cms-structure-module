@@ -14,14 +14,17 @@ use Nette\Application\UI\Form;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\BaseModule\Database\DatabaseException;
 use Wakers\BaseModule\Util\AjaxValidate;
+use Wakers\BaseModule\Util\SetDisabledForm;
 use Wakers\StructureModule\Manager\RecipeSlugManager;
 use Wakers\StructureModule\Repository\RecipeRepository;
 use Wakers\StructureModule\Repository\RecipeSlugRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class RecipeSlugModal extends BaseControl
 {
     use AjaxValidate;
+    use SetDisabledForm;
 
 
     /**
@@ -130,6 +133,11 @@ class RecipeSlugModal extends BaseControl
 
         $form->onValidate[] = function (Form $form) { $this->validate($form); };
         $form->onSuccess[] = function (Form $form) { $this->successSlug($form); };
+
+        if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_RECIPE_SLUG_MODAL))
+        {
+            $this->setDisabledForm($form, TRUE);
+        }
 
         return $form;
     }

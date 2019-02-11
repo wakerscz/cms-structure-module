@@ -36,3 +36,8 @@ services:
     - Wakers\StructureModule\Component\Frontend\StructureModal\IStructureModal
     - Wakers\StructureModule\Component\Frontend\StructureRemoveModal\IStructureRemoveModal
     - Wakers\StructureModule\Component\Frontend\Printer\IPrinter
+
+
+parameters:
+    acl:
+        - Wakers\StructureModule\Security\StructureAuthorizator

@@ -14,6 +14,7 @@ use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\StructureModule\Database\RecipeVariable;
 use Wakers\StructureModule\Manager\RecipeVariableManager;
 use Wakers\StructureModule\Repository\RecipeVariableRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class VariableRemoveModal extends BaseControl
@@ -95,7 +96,7 @@ class VariableRemoveModal extends BaseControl
      */
     public function handleRemove(int $id) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_VARIABLE_REMOVE_MODAL))
         {
             $this->variableEntity = $this->variableRepository->findOneById($id);
 

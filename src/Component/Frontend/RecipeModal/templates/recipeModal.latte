@@ -1,152 +1,152 @@
 {**
  * Copyright (c) 2018 Wakers.cz
- *
  * @author Jiří Zapletal (http://www.wakers.cz, zapletal@wakers.cz)
- *
  *}
 
 
-<div class="wakers_modal" id="wakers_structure_recipe_modal">
-    <div class="modal_title">
-        <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
-        Předpis struktury ({$presenter->template->langEntity->getName()})
+{if $user->isAllowed(Wakers\StructureModule\Security\StructureAuthorizator::RES_RECIPE_MODAL)}
+    <div class="wakers_modal" id="wakers_structure_recipe_modal">
+        <div class="modal_title">
+            <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+            Předpis struktury ({$presenter->template->langEntity->getName()})
+        </div>
+
+        <div class="modal_info">
+            Předpisy stuktur se definují napříč všemi jazyky, <strong class="color_red">ovšem pozor</strong> - hlavní kategorie se jim musejí přiřadit zvlášť pro každý jazyk.<br>
+            Momentálně se nacházíte v sekci pro jazyk: <strong class="color_red">{$presenter->template->langEntity->getName()|upper}</strong>
+        </div>
+
+        <div class="modal_subtitle">
+            Přidat / Upravit
+        </div>
+
+        {snippet recipeForm}
+            <form n:name="recipeForm" class="wakers_form" id="wakers_recipe_form">
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="name">Název:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <input n:name="name" placeholder="Aktuality -> Detail">
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="isDynamic">Typ struktury:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <select n:name="isDynamic"></select>
+
+                        <div class="control_info">
+                        <span data-wakers-tooltip="Statická struktura je na celém webu neměnná (patička, menu, atp.). Dynamická stuktura se přiřazuje konkrétní pod-stránce (aktuality, články, produkty, atp.).">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="maxInstances">Max. počet instancí:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <input n:name="maxInstances">
+
+                        <div class="control_info">
+                        <span data-wakers-tooltip="Pokud je struktura statická, lze vytvořit daný počet instancí napříč všemi pod-stránkami. Pokud je struktura dynamická, lze na každé pod-stránce vytvořit daný počet. Počítá se zvlášť pro každý recipeSlug.">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="allowedCategories">Hlavní kategorie <strong class="color_red">({$presenter->template->langEntity->getName()})</strong>:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <div class="checkbox_list">
+                            {foreach $form['allowedCategories']->items as $value => $name}
+                                <label n:name="$form['allowedCategories']:$value" class="checkbox">
+                                    <input n:name="$form['allowedCategories']:$value">
+                                    <span></span>{$name}
+                                </label>
+                            {/foreach}
+
+                            {if count($form['allowedCategories']->items) < 1}
+                                <span class="color_red">Každá struktura musí mít alespoň jednu hlavní ({$presenter->template->langEntity->getName()}) kategorii.</span><br>
+                                <a href="#" data-wakers-modal-open="wakers_category_edit_modal">Zde definujte kategorie!</a>
+                            {/if}
+                        </div>
+
+                        <div class="control_info dashed">
+                        <span data-wakers-tooltip="Omezuje do kterých hlavních kategorií (a jejich pod-kategoríí) může být struktura zařazena.  POZOR: Při odebrání kategorie (vyškrtnutí) se odstraní vazby mezi strukturami kategoriemi (i pod-kategoriemi)">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="maxCategories">Max. počet kategorií:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <input n:name="maxCategories">
+
+                        <div class="control_info">
+                        <span data-wakers-tooltip="Omezuje do kolika kategorií najednou, může být struktura zařazena.">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="allowedParent">Rodičovská struktura:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <select n:name="allowedParent"></select>
+
+                        <div class="control_info">
+                        <span data-wakers-tooltip="Povolte strukturu které lze přiřadit tuto strukturu jako potomka. Rodičovská struktura se používá pro zanořování struktur do sebe. Lze jí využít například pro navigační menu. POZOR: Při změně hodnoty se všem strukturám nastaví výchozí rodič (přepočítá se celý strom).">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label">
+                        <label n:name="maxDepth">Max. hloubka zanoření:</label>
+                    </div>
+
+                    <div class="group_control">
+                        <input n:name="maxDepth">
+
+                        <div class="control_info">
+                        <span data-wakers-tooltip="Pokud jste nastavili, že struktura může být potomkem jiné (i stejné) struktury (políčko výše), lze tímto parametrem omezit hloubku zanoření. Lze například omezit hloubku dropdown menu. POZOR: Při úpravě (snížení hloubky) se všem strukturám zanořeným pod uvedenou hloubku nastaví zanoření na výchozí (první) úroveň.">
+                            &#10025;
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <div class="group_label"></div>
+                    <div class="group_control">
+                        <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button>Uložit předpis</button>
+                    </div>
+                </div>
+            </form>
+        {/snippet}
     </div>
-
-    <div class="modal_info">
-        Předpisy stuktur se definují napříč všemi jazyky, <strong class="color_red">ovšem pozor</strong> - hlavní kategorie se jim musejí přiřadit zvlášť pro každý jazyk.<br>
-        Momentálně se nacházíte v sekci pro jazyk: <strong class="color_red">{$presenter->template->langEntity->getName()|upper}</strong>
-    </div>
-
-    <div class="modal_subtitle">
-        Přidat / Upravit
-    </div>
-
-    {snippet recipeForm}
-        <form n:name="recipeForm" class="wakers_form" id="wakers_recipe_form">
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="name">Název:</label>
-                </div>
-
-                <div class="group_control">
-                    <input n:name="name" placeholder="Aktuality -> Detail">
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="isDynamic">Typ struktury:</label>
-                </div>
-
-                <div class="group_control">
-                    <select n:name="isDynamic"></select>
-
-                    <div class="control_info">
-                    <span data-wakers-tooltip="Statická struktura je na celém webu neměnná (patička, menu, atp.). Dynamická stuktura se přiřazuje konkrétní pod-stránce (aktuality, články, produkty, atp.).">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="maxInstances">Max. počet instancí:</label>
-                </div>
-
-                <div class="group_control">
-                    <input n:name="maxInstances">
-
-                    <div class="control_info">
-                    <span data-wakers-tooltip="Pokud je struktura statická, lze vytvořit daný počet instancí napříč všemi pod-stránkami. Pokud je struktura dynamická, lze na každé pod-stránce vytvořit daný počet. Počítá se zvlášť pro každý recipeSlug.">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="allowedCategories">Hlavní kategorie <strong class="color_red">({$presenter->template->langEntity->getName()})</strong>:</label>
-                </div>
-
-                <div class="group_control">
-                    <div class="checkbox_list">
-                        {foreach $form['allowedCategories']->items as $value => $name}
-                            <label n:name="$form['allowedCategories']:$value" class="checkbox">
-                                <input n:name="$form['allowedCategories']:$value">
-                                <span></span>{$name}
-                            </label>
-                        {/foreach}
-
-                        {if count($form['allowedCategories']->items) < 1}
-                            <span class="color_red">Každá struktura musí mít alespoň jednu hlavní ({$presenter->template->langEntity->getName()}) kategorii.</span><br>
-                            <a href="#" data-wakers-modal-open="wakers_category_edit_modal">Zde definujte kategorie!</a>
-                        {/if}
-                    </div>
-
-                    <div class="control_info dashed">
-                    <span data-wakers-tooltip="Omezuje do kterých hlavních kategorií (a jejich pod-kategoríí) může být struktura zařazena.  POZOR: Při odebrání kategorie (vyškrtnutí) se odstraní vazby mezi strukturami kategoriemi (i pod-kategoriemi)">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="maxCategories">Max. počet kategorií:</label>
-                </div>
-
-                <div class="group_control">
-                    <input n:name="maxCategories">
-
-                    <div class="control_info">
-                    <span data-wakers-tooltip="Omezuje do kolika kategorií najednou, může být struktura zařazena.">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="allowedParent">Rodičovská struktura:</label>
-                </div>
-
-                <div class="group_control">
-                    <select n:name="allowedParent"></select>
-
-                    <div class="control_info">
-                    <span data-wakers-tooltip="Povolte strukturu které lze přiřadit tuto strukturu jako potomka. Rodičovská struktura se používá pro zanořování struktur do sebe. Lze jí využít například pro navigační menu. POZOR: Při změně hodnoty se všem strukturám nastaví výchozí rodič (přepočítá se celý strom).">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label">
-                    <label n:name="maxDepth">Max. hloubka zanoření:</label>
-                </div>
-
-                <div class="group_control">
-                    <input n:name="maxDepth">
-
-                    <div class="control_info">
-                    <span data-wakers-tooltip="Pokud jste nastavili, že struktura může být potomkem jiné (i stejné) struktury (políčko výše), lze tímto parametrem omezit hloubku zanoření. Lze například omezit hloubku dropdown menu. POZOR: Při úpravě (snížení hloubky) se všem strukturám zanořeným pod uvedenou hloubku nastaví zanoření na výchozí (první) úroveň.">
-                        &#10025;
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form_group">
-                <div class="group_label"></div>
-                <div class="group_control">
-                    <button n:name="save" type="submit" class="wakers_btn" data-wakers-progress-button>Uložit předpis</button>
-                </div>
-            </div>
-        </form>
-    {/snippet}
-</div>
+{/if}

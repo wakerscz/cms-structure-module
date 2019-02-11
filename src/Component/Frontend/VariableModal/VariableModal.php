@@ -14,17 +14,20 @@ use Nette\Application\UI\Form;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\BaseModule\Database\DatabaseException;
 use Wakers\BaseModule\Util\AjaxValidate;
+use Wakers\BaseModule\Util\SetDisabledForm;
 use Wakers\BaseModule\Util\Validator;
 use Wakers\StructureModule\Database\Recipe;
 use Wakers\StructureModule\Database\RecipeVariable;
 use Wakers\StructureModule\Manager\RecipeVariableManager;
 use Wakers\StructureModule\Repository\RecipeRepository;
 use Wakers\StructureModule\Repository\RecipeVariableRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class VariableModal extends BaseControl
 {
     use AjaxValidate;
+    use SetDisabledForm;
 
 
     /**
@@ -254,6 +257,11 @@ class VariableModal extends BaseControl
 
         $form->onValidate[] = function (Form $form) { $this->validate($form); };
         $form->onSuccess[] = function (Form $form) { $this->success($form); };
+
+        if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_VARIABLE_MODAL))
+        {
+            $this->setDisabledForm($form, TRUE);
+        }
 
         return $form;
     }

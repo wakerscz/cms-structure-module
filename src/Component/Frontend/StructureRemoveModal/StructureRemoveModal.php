@@ -14,6 +14,7 @@ use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\StructureModule\Database\Structure;
 use Wakers\StructureModule\Manager\StructureManager;
 use Wakers\StructureModule\Repository\StructureRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class StructureRemoveModal extends BaseControl
@@ -109,7 +110,7 @@ class StructureRemoveModal extends BaseControl
      */
     public function handleRemove(int $id) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_STRUCTURE_REMOVE_MODAL))
         {
             $this->structureEntity = $this->structureRepository->findOneByIdWithRecipe($id);
 

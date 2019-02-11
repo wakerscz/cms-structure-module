@@ -5,21 +5,23 @@
  *
  *}
 
-<div class="wakers_modal" id="wakers_structure_structure_modal">
-    {snippetArea modal}
+{if $user->isAllowed(Wakers\StructureModule\Security\StructureAuthorizator::RES_STRUCTURE_MODAL)}
+    <div class="wakers_modal" id="wakers_structure_structure_modal">
+        {snippetArea modal}
 
-        <div class="modal_title" n:snippet="title">
-            {if $recipe}
-                <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
-                {$recipe->getName()} {if $structure}(# {$structure->getId()}){/if}
-            {/if}
-        </div>
+            <div class="modal_title" n:snippet="title">
+                {if $recipe}
+                    <a href="#" class="close" data-wakers-modal-close>&#x2715</a>
+                    {$recipe->getName()} {if $structure}(# {$structure->getId()}){/if}
+                {/if}
+            </div>
 
-        {include './formNoFile.latte'}
+            {include './formNoFile.latte'}
 
-        {include './formFile.latte'}
+            {include './formFile.latte'}
 
-        {include './formMain.latte'}
+            {include './formMain.latte'}
 
-    {/snippetArea}
-</div>
+        {/snippetArea}
+    </div>
+{/if}

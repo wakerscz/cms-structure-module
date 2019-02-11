@@ -14,6 +14,7 @@ use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\StructureModule\Database\Recipe;
 use Wakers\StructureModule\Manager\RecipeManager;
 use Wakers\StructureModule\Repository\RecipeRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class RecipeRemoveModal extends BaseControl
@@ -95,7 +96,7 @@ class RecipeRemoveModal extends BaseControl
      */
     public function handleRemove(int $id) : void
     {
-        if ($this->presenter->isAjax())
+        if ($this->presenter->isAjax() && $this->presenter->user->isAllowed(StructureAuthorizator::RES_RECIPE_REMOVE_MODAL))
         {
             $this->recipeEntity = $this->recipeRepository->findOneById($id);
 

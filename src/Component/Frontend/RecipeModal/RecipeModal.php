@@ -13,6 +13,7 @@ namespace Wakers\StructureModule\Component\Frontend\RecipeModal;
 use Nette\Application\UI\Form;
 use Wakers\BaseModule\Component\Frontend\BaseControl;
 use Wakers\BaseModule\Util\AjaxValidate;
+use Wakers\BaseModule\Util\SetDisabledForm;
 use Wakers\CategoryModule\Repository\CategoryRepository;
 use Wakers\LangModule\Database\Lang;
 use Wakers\LangModule\Repository\LangRepository;
@@ -23,11 +24,13 @@ use Wakers\StructureModule\Manager\StructureInCategoryManager;
 use Wakers\StructureModule\Manager\StructureManager;
 use Wakers\StructureModule\Repository\RecipeCategoryAllowedRepository;
 use Wakers\StructureModule\Repository\RecipeRepository;
+use Wakers\StructureModule\Security\StructureAuthorizator;
 
 
 class RecipeModal extends BaseControl
 {
     use AjaxValidate;
+    use SetDisabledForm;
 
 
     /**
@@ -243,6 +246,12 @@ class RecipeModal extends BaseControl
 
         $form->onValidate[] = function (Form $form) { $this->validate($form); };
         $form->onSuccess[] = function (Form $form) { $this->success($form); };
+
+
+        if (!$this->presenter->user->isAllowed(StructureAuthorizator::RES_RECIPE_MODAL))
+        {
+            $this->setDisabledForm($form, TRUE);
+        }
 
         return $form;
     }
