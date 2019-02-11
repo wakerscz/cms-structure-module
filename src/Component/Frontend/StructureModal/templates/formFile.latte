@@ -38,7 +38,7 @@
                                     {foreach $files as $file}
                                         <li>
                                             <div class="inner_container">
-                                                <div class="inner_box">
+                                                <div class="inner_box files">
                                                     #{$file->getId()} -
                                                     {if mb_strlen($file->getName()) > 30}
                                                         {$file->getName()|substr: 0, 20|trim: '-'}....{$file->getName()|substr: -10|trim: '-'}
@@ -47,7 +47,7 @@
                                                     {/if}
                                                 </div>
 
-                                                <div class="inner_action">
+                                                <div class="inner_action files">
                                                     {if $variable->getType() === Wakers\StructureModule\Database\RecipeVariable::TYPE_IMAGES}
                                                         <!--a href="{*file $file->getProtectedFile()*}" target="_blank"-->
                                                             <img src="{img $file->getProtectedFile(), '30x30', 'exact'}" alt="{$file->getName()}">
@@ -57,17 +57,17 @@
                                                     {/if}
                                                 </div>
 
-                                                <div class="inner_action">
+                                                <div class="inner_action files">
                                                     <small data-wakers-tooltip="Velikost v MB">{round($file->getSizeMb(), 1)}</small>
                                                 </div>
 
-                                                <div class="inner_action">
+                                                <div class="inner_action files">
                                                     <a href="{link RemoveFile! $file->getId()}" type="button" class="wakers_btn btn_small inverse" data-wakers-tooltip="Odstranit (okamžitě bez potvrzování)" data-wakers-progress-button>
                                                         &#x267A;
                                                     </a>
                                                 </div>
 
-                                                <div class="inner_action">
+                                                <div class="inner_action files">
                                                     <button type="button" class="wakers_btn btn_small inverse" data-wakers-tooltip="Upravit" data-wakers-toggle="wakers-file-property-{$file->getId()}">
                                                         &#x270E;
                                                     </button>
