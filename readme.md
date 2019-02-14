@@ -34,7 +34,7 @@ Stuktury lze zařazovat i do kategorií. Pro výpis struktur existují 4 základ
 1. `findByCategorySlugs`
 1. `findRecursiveByCategorySlugs`
 
-#### Metody pro Výpis dle typu předpisu (recipeSlugs)
+### Metody pro výpis dle klíče předpisu (recipeSlugs)
 1. `findByRecipeSlugsAndPage`
 1. `findRecursiveByRecipeSlugsAndPage`
 
@@ -59,7 +59,7 @@ jako **(flat / tree) array** objektů typu `Wakers\StructureModule\Entity\Struct
 ``` 
 
 ```latte
-{* Výpis dynamických struktur dle kategorie *}
+{* Výpis dynamických struktur dle kategorií (categorySlugs) *}
 
 {control structurePrinter [
     'method' => 'findByCategorySlugs',
@@ -77,7 +77,7 @@ jako **(flat / tree) array** objektů typu `Wakers\StructureModule\Entity\Struct
 
 
 ```latte
-{* Výpis dynamických struktur dle recipeSlug - svázaných s určitou page *}
+{* Výpis dynamických struktur dle recipeSlugs - svázaných s určitou page *}
 
 {control structurePrinter [
     'method' => 'findByRecipeSlugsAndPage',
@@ -99,4 +99,4 @@ který obsahuje předdefinované bloky pro snazší použití.
 
 - [Vytvoření struktury](https://github.com/wakerscz/cms-sandbox/blob/master/app/template/page/%40layout.latte#L20-L23)
 - [Editace / odstranění struktury](https://github.com/wakerscz/cms-sandbox/blob/master/app/template/structure/dynamic/newsDetail.latte#L13-L18)
-- [Přidání pod-stránky](https://github.com/wakerscz/cms-sandbox/blob/master/app/template/structure/dynamic/homepageNews.latte#L10-L14) - Někdy je potřebné před vytvořením dynamické struktury.
+- [Přidání pod-stránky](https://github.com/wakerscz/cms-sandbox/blob/master/app/template/structure/dynamic/homepageNews.latte#L10-L14) - někdy potřebné před vytvořením dynamické struktury.
