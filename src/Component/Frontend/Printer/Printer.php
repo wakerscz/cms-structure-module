@@ -79,6 +79,7 @@ class Printer extends BaseControl
      */
     public function render(array $attrs) : void
     {
+        $this->template->attrs = $attrs;
         $this->template->rows = $this->getResult($attrs);
         $this->template->paginator = $this->paginator;
 
