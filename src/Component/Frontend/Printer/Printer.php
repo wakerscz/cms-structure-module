@@ -75,15 +75,33 @@ class Printer extends BaseControl
 
     /**
      * @param array $attrs
+     * @return \Nette\Bridges\ApplicationLatte\Template
      * @throws \ReflectionException
      */
-    public function render(array $attrs) : void
+    public function preRender(array $attrs) : \Nette\Bridges\ApplicationLatte\Template
     {
         $this->template->attrs = $attrs;
         $this->template->rows = $this->getResult($attrs);
         $this->template->paginator = $this->paginator;
 
         $this->template->setFile(StructureRepository::TEMPLATE_PATH . $attrs['template']);
+
+        return $this->template;
+    }
+
+
+    /**
+     * @param array $attrs
+     * @param bool $preRender
+     * @throws \ReflectionException
+     */
+    public function render(array $attrs, bool $preRender = FALSE) : void
+    {
+        if ($preRender === FALSE)
+        {
+            $this->preRender($attrs);
+        }
+
         $this->template->render();
     }
 
