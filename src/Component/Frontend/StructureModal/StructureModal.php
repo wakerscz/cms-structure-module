@@ -357,6 +357,7 @@ class StructureModal extends BaseControl
         {
             $recipeSlug = $this->getRecipeSlug();
             $structure = $this->getStructure();
+            $parentStructure = $structure ? $structure->getParent() : NULL;
             $noFileVariables = $this->getNoFileVariables();
 
             $this->structureManager->getConnection()->beginTransaction();
@@ -366,7 +367,8 @@ class StructureModal extends BaseControl
                 $structure = $this->structureManager->save(
                     $structure,
                     $recipeSlug,
-                    $this->user
+                    $this->user,
+                    $parentStructure
                 );
 
                 $this->structureValueManager->saveNoFileFields(
