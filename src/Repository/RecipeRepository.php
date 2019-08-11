@@ -60,6 +60,7 @@ class RecipeRepository
         return RecipeQuery::create()
             ->leftJoinWithRecipeVariable()
             ->leftJoinWithRecipeSlug()
+            ->orderByName()
             ->find();
     }
 }
